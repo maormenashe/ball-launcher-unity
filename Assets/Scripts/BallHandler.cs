@@ -5,8 +5,14 @@ public class BallHandler : MonoBehaviour
 {
     [SerializeField]
     private Rigidbody2D currentBallRigidBody;
+    [SerializeField]
+    private SpringJoint2D currentBallSpringJoint;
+    [SerializeField]
+    private float detachDelay = 0.5f;
 
     private Camera mainCamera;
+
+    private bool isDragging;
 
     void Awake()
     {
@@ -15,11 +21,23 @@ public class BallHandler : MonoBehaviour
 
     void Update()
     {
-        if (!Touchscreen.current.primaryTouch.press.IsPressed())
+        if (currentBallRigidBody == null)
         {
-            currentBallRigidBody.bodyType = RigidbodyType2D.Dynamic;
             return;
         }
+
+        if (!Touchscreen.current.primaryTouch.press.IsPressed())
+        {
+            if (isDragging)
+            {
+                LaunchBall();
+            }
+
+
+            return;
+        }
+
+        isDragging = true;
         currentBallRigidBody.bodyType = RigidbodyType2D.Kinematic;
 
         Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
@@ -27,5 +45,21 @@ public class BallHandler : MonoBehaviour
         Vector3 touchPositionInWorldSpace = mainCamera.ScreenToWorldPoint(touchPosition);
 
         currentBallRigidBody.position = touchPositionInWorldSpace;
+    }
+
+    private void LaunchBall()
+    {
+        currentBallRigidBody.bodyType = RigidbodyType2D.Dynamic;
+        currentBallRigidBody = null;
+
+        Invoke(nameof(DetachBall), detachDelay);
+
+        isDragging = false;
+    }
+
+    private void DetachBall()
+    {
+        currentBallSpringJoint.enabled = false;
+        currentBallSpringJoint = null;
     }
 }
