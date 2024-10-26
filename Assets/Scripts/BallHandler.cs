@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class BallHandler : MonoBehaviour
 {
@@ -27,6 +28,16 @@ public class BallHandler : MonoBehaviour
         SpawnNewBall();
     }
 
+    private void OnEnable()
+    {
+        EnhancedTouchSupport.Enable();
+    }
+
+    private void OnDisable()
+    {
+        EnhancedTouchSupport.Disable();
+    }
+
     void Update()
     {
         if (currentBallRigidBody == null)
@@ -34,7 +45,8 @@ public class BallHandler : MonoBehaviour
             return;
         }
 
-        if (!Touchscreen.current.primaryTouch.press.IsPressed())
+        bool hasTouches = Touch.activeTouches.Count > 0;
+        if (!hasTouches)
         {
             if (isDragging)
             {
@@ -48,7 +60,14 @@ public class BallHandler : MonoBehaviour
         isDragging = true;
         currentBallRigidBody.bodyType = RigidbodyType2D.Kinematic;
 
-        Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+        Vector2 touchPosition = Vector2.zero;
+
+        foreach (Touch touch in Touch.activeTouches)
+        {
+            touchPosition += touch.screenPosition;
+        }
+
+        touchPosition /= Touch.activeTouches.Count;
 
         Vector3 touchPositionInWorldSpace = mainCamera.ScreenToWorldPoint(touchPosition);
 
