@@ -70,3 +70,33 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+Builds/
+*.utmp
+
+# Backup Files: If you use certain editors or IDEs, they might generate backup files
+# *~
+# *.bak
+# *.swp
+
+# Unity Collaborate Files: If you use Unity Collaborate (or if you have remnants from it):
+# /.collab/
+
+# Visual Studio Code Settings: If you use Visual Studio Code, you might want to ignore these settings:
+# .vscode/
+
+# Rider Temporary Files: If you use JetBrains Rider, consider:
+# *.idea/
+
+# Project Settings and Temp Files: You might also want to consider ignoring additional settings:
+# /[Tt]emp/
+
+# Unity Ads and Analytics Files: If you’re using Unity Ads or Analytics:
+# /[Aa]ssets/[Aa]dvertisements/
+# /[Aa]ssets/[Aa]nalytics/
+
+# Crash Reports: Depending on your workflow:
+# /[Cc]rash[ ]*[Rr]eports/
+
+# Unity Package Manager Cache: If you’re using the package manager:
+# /.upm/
